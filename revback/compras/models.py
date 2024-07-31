@@ -1,4 +1,5 @@
 from django.db import models
+from proveedores.models import Proveedor
 
 
 class Compra(models.Model):
@@ -8,5 +9,7 @@ class Compra(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     # Foreign keys
-    proveedor = models.CharField(max_length=128)
-    plataformas = models.CharField(max_length=128)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, related_name='compras_del_proveedor')
+
+    def __str__(self):
+        return str(self.id) + "_" + str(self.created)

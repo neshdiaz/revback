@@ -1,12 +1,27 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
+from bodegas.models import Bodega
+from compras.models import Compra
+
+
+class TipoPlataforma(models.Model):
+    nombre = models.CharField(max_length=128)
+    descripcion = models.TextField()
+    url_imagen = models.CharField(max_length=128, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Plataforma(models.Model):
 
     ESTADO_PLATAFORMA = {
-        ("ADQ ", "Adquirida"),
+        ("ADQ", "Adquirida"),
         ("VENC", "Vencida"),
-        ("VEND ", "Vendida"),
+        ("VEND", "Vendida"),
     }
 
     ESTADO_PAGO = {
@@ -16,36 +31,53 @@ class Plataforma(models.Model):
 
     correo = models.CharField(max_length=128)
     contraseña = models.CharField(max_length=128)
-    estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA)
-    estado_pago_proveedor = models.CharField(max_length=5, choices=ESTADO_PAGO)
-    fecha_pagada_proveedor = models.DateField()
-    estado_pago_vendedor = models.CharField(max_length=5, choices=ESTADO_PAGO)
-    fecha_pagada_vendedor = models.DateField()
-    fecha_compra = models.DateField()
-    fecha_vencimiento = models.DateField()
-    vigencia = models.SmallIntegerField()
+    estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA, default="ADQ")
+    estado_pago_proveedor = models.CharField(
+        max_length=5, choices=ESTADO_PAGO, default="P_PAG"
+    )
+    fecha_pagada_proveedor = models.DateField(null=True, blank=True)
+    estado_pago_vendedor = models.CharField(
+        max_length=5, choices=ESTADO_PAGO, default="P_PAG"
+    )
+    fecha_pagada_vendedor = models.DateField(null=True, blank=True)
+    fecha_compra = models.DateField(default=timezone.now)
+    fecha_vencimiento = models.DateField(default=timezone.now() + timedelta(days=30))
+    vigencia = models.SmallIntegerField(default=30)
     costo_unitario_compra = models.DecimalField(max_digits=10, decimal_places=2)
-    costo_unitario_venta = models.DecimalField(max_digits=10, decimal_places=2)
-    costo_unitario_venta_esp_1 = models.DecimalField(max_digits=10, decimal_places=2)
-    costo_unitario_venta_esp_2 = models.DecimalField(max_digits=10, decimal_places=2)
-    url_imagen = models.CharField(max_length=128)
-    notas = models.TextField()
+    costo_unitario_venta = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    costo_unitario_venta_esp_1 = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    costo_unitario_venta_esp_2 = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    url_imagen = models.CharField(max_length=128, null=True, blank=True)
+    notas = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    # foreing keys
-    tipo_plataforma = models.CharField(max_length=128)
-    bodega_actual = models.CharField(max_length=128)
-    compras = models.CharField(max_length=128)
-    traslados = models.CharField(max_length=128)
+    # foreign keys
+    bodega = models.ForeignKey(
+        Bodega,
+        on_delete=models.PROTECT,
+        related_name="plataformas_en_bodega",
+        default=1,
+    )
+    compras = models.ForeignKey(
+        Compra,
+        on_delete=models.PROTECT,
+        related_name="plataformas_en_compra",
+        null=True,
+        blank=True,
+    )
+    tipo = models.ForeignKey(
+        TipoPlataforma,
+        on_delete=models.PROTECT,
+        related_name="plataformas_x_tipo_plataforma",
+    )
+    traslados = models.CharField(max_length=128, null=True, blank=True)
 
-
-class TipoPlataforma(models.Model):
-    nombre = models.CharField(max_length=128)
-    descripcion = models.TextField()
-    url_imagen = models.CharField(max_length=128)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    # foreing keys
-    plataformas = models.ForeignKey(Plataforma, on_delete=models.DO_NOTHING)
+    def __str__(self):
+        return self.correo
