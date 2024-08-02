@@ -53,7 +53,6 @@ class Plataforma(models.Model):
     costo_unitario_venta_esp_2 = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
-    url_imagen = models.CharField(max_length=128, null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -77,7 +76,6 @@ class Plataforma(models.Model):
         on_delete=models.PROTECT,
         related_name="plataformas_x_tipo_plataforma",
     )
-    traslados = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
         return self.correo
