@@ -29,7 +29,7 @@ class Plataforma(models.Model):
         ("P_PAG", "Pendiente Pago"),
     }
 
-    correo = models.CharField(max_length=128)
+    correo = models.CharField(max_length=128, unique=True)
     contraseña = models.CharField(max_length=128)
     estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA, default="ADQ")
     estado_pago_proveedor = models.CharField(
