@@ -9,7 +9,7 @@ class TipoPlataforma(models.Model):
     nombre = models.CharField(max_length=128)
     descripcion = models.TextField()
     url_imagen = models.CharField(max_length=128, null=True, blank=True)
-    precio_default = models.DecimalField(
+    precio_base = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
     created = models.DateTimeField(auto_now_add=True)
