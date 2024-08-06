@@ -9,6 +9,9 @@ class TipoPlataforma(models.Model):
     nombre = models.CharField(max_length=128)
     descripcion = models.TextField()
     url_imagen = models.CharField(max_length=128, null=True, blank=True)
+    precio_default = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -22,6 +25,7 @@ class Plataforma(models.Model):
         ("ADQ", "Adquirida"),
         ("VENC", "Vencida"),
         ("VEND", "Vendida"),
+        ("RENO", "Renovada"),
     }
 
     ESTADO_PAGO = {
@@ -43,14 +47,11 @@ class Plataforma(models.Model):
     fecha_compra = models.DateField(default=timezone.now)
     fecha_vencimiento = models.DateField(default=timezone.now() + timedelta(days=30))
     vigencia = models.SmallIntegerField(default=30)
-    costo_unitario_compra = models.DecimalField(max_digits=10, decimal_places=2)
-    costo_unitario_venta = models.DecimalField(
+    precio_compra = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_venta = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
-    costo_unitario_venta_esp_1 = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
-    )
-    costo_unitario_venta_esp_2 = models.DecimalField(
+    precio_venta_2 = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
     notas = models.TextField(null=True, blank=True)
