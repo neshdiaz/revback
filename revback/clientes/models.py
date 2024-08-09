@@ -3,7 +3,7 @@ from usuarios.models import Usuario
 
 
 class Cliente(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete= models.CASCADE)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     nombres = models.CharField(max_length=128)
     apellidos = models.CharField(max_length=128)
     email = models.CharField(max_length=128, unique=True)
@@ -16,3 +16,6 @@ class Cliente(models.Model):
 
     def __str__(self):
         return self.nombres + " " + self.apellidos
+
+    class Meta:
+        ordering = ["created"]

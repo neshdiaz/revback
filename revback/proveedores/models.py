@@ -15,3 +15,6 @@ class Proveedor(models.Model):
 
     def __str__(self):
         return self.nombres + " " + self.apellidos
+
+    class Meta:
+        ordering = ["created"]

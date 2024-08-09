@@ -33,4 +33,15 @@ class Traslado(models.Model):
     )
 
     def __str__(self):
-        return 'Traslado: ' + str(self.plataforma) + ' ' + str(self.bodega_origen) + ' -> ' + str(self.bodega_destino)
+        return (
+            "Traslado: "
+            + str(self.plataforma)
+            + " "
+            + str(self.bodega_origen)
+            + " -> "
+            + str(self.bodega_destino)
+        )
+
+    class Meta:
+        ordering = ["created"]
+        

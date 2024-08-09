@@ -9,7 +9,12 @@ class Compra(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     # Foreign keys
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, related_name='compras_del_proveedor')
+    proveedor = models.ForeignKey(
+        Proveedor, on_delete=models.PROTECT, related_name="compras_del_proveedor"
+    )
 
     def __str__(self):
-        return str(self.created.date()) + '-' + str(self.id)
+        return str(self.created.date()) + "-" + str(self.id)
+
+    class Meta:
+        ordering = ["created"]

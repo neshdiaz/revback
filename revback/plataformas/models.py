@@ -18,6 +18,9 @@ class TipoPlataforma(models.Model):
     def __str__(self):
         return self.nombre
 
+    class Meta:
+        ordering = ["created"]
+
 
 class Plataforma(models.Model):
 
@@ -80,3 +83,6 @@ class Plataforma(models.Model):
 
     def __str__(self):
         return self.correo
+
+    class Meta:
+        ordering = ["created"]
