@@ -5,17 +5,16 @@ from plataformas.serializers import PlataformaSerializer
 
 
 class CompraSerializer(serializers.ModelSerializer):
-    #plataformas_en_compra = PlataformaSerializer(many=True)
     plataformas_en_compra = PlataformaSerializer(many=True)
+
     class Meta:
         model = Compra
-        fields = ['fecha','notas', 'proveedor', 'plataformas_en_compra']
+        fields = ["fecha", "notas", "proveedor", "plataformas_en_compra"]
 
     def create(self, validated_data):
-        print('Datos validados' + str(validated_data))
-        plataformas_data = validated_data.pop('plataformas_en_compra')
+        plataformas_data = validated_data.pop("plataformas_en_compra")
         compra = Compra.objects.create(**validated_data)
+
         for plataforma_data in plataformas_data:
-            print('Datos de plataforma'+ str(plataforma_data))
             Plataforma.objects.create(compra=compra, **plataforma_data)
-        return compra
+        return
