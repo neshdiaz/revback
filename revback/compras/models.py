@@ -4,7 +4,7 @@ from proveedores.models import Proveedor
 
 class Compra(models.Model):
     fecha = models.DateField()
-    notas = models.TextField()
+    notas = models.TextField(blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

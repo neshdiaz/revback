@@ -37,7 +37,7 @@ class Plataforma(models.Model):
     }
 
     correo = models.CharField(max_length=128, unique=True)
-    contraseña = models.CharField(max_length=128)
+    contrasena = models.CharField(max_length=128)
     estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA, default="ADQ")
     estado_pago_proveedor = models.CharField(
         max_length=5, choices=ESTADO_PAGO, default="P_PAG"
@@ -50,7 +50,7 @@ class Plataforma(models.Model):
     fecha_compra = models.DateField(default=timezone.now)
     fecha_vencimiento = models.DateField(default=timezone.now() + timedelta(days=30))
     vigencia = models.SmallIntegerField(default=30)
-    precio_compra = models.DecimalField(max_digits=10, decimal_places=2)
+    precio_compra = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     precio_venta = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
@@ -68,7 +68,7 @@ class Plataforma(models.Model):
         related_name="plataformas_en_bodega",
         default=1,
     )
-    compras = models.ForeignKey(
+    compra = models.ForeignKey(
         Compra,
         on_delete=models.PROTECT,
         related_name="plataformas_en_compra",

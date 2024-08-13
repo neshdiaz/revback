@@ -31,7 +31,7 @@ from ventas.views import VentaViewSet
 router = routers.DefaultRouter()
 router.register(r"bodegas", BodegaViewSet)
 router.register(r"clientes", ClienteViewSet)
-router.register(r"compras", CompraViewSet)
+router.register(r"nueva-compra", CompraViewSet)
 router.register(r"equipos", EquipoViewSet)
 router.register(r"plataformas", PlataformaViewSet)
 router.register(r"tipo-plataformas", TipoPlataformaViewSet)
@@ -43,5 +43,5 @@ router.register(r"ventas", VentaViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/', include(router.urls)),
+    path('api/', include(router.urls))
 ]
