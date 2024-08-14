@@ -17,4 +17,4 @@ class CompraSerializer(serializers.ModelSerializer):
 
         for plataforma_data in plataformas_data:
             Plataforma.objects.create(compra=compra, **plataforma_data)
-        return
+        return compra
