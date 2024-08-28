@@ -17,4 +17,6 @@ class Proveedor(models.Model):
         return self.nombres + " " + self.apellidos
 
     class Meta:
+        verbose_name_plural = "Proveedores"
         ordering = ["created"]
+
