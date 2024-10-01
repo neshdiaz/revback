@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from bodegas import urls
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
-from bodegas.views import BodegaViewSet
+from bodegas.views import BodegaListView
 from clientes.views import ClienteViewSet
 from compras.views import CompraViewSet
 from equipos.views import EquipoViewSet
@@ -33,7 +34,6 @@ from usuarios.views import UsuarioViewSet
 from ventas.views import VentaViewSet
 
 router = routers.DefaultRouter()
-router.register(r"bodegas", BodegaViewSet)
 router.register(r"clientes", ClienteViewSet)
 router.register(r"compras", CompraViewSet)
 router.register(r"equipos", EquipoViewSet)
@@ -44,10 +44,13 @@ router.register(r"traslados", TrasladoViewSet)
 router.register(r"usuarios", UsuarioViewSet)
 router.register(r"ventas", VentaViewSet)
 
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/bodegas', include('bodegas.urls')),
     path('api/', include(router.urls))
 ]
