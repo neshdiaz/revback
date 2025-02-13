@@ -64,25 +64,41 @@ class Plataforma(models.Model):
     # foreign keys
     bodega = models.ForeignKey(
         Bodega,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="plataformas_en_la_bodega",
         default=1,
     )
     compra = models.ForeignKey(
         Compra,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="plataformas_en_la_compra",
         null=True,
         blank=True,
     )
     tipo = models.ForeignKey(
         TipoPlataforma,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="plataformas_x_tipo_plataforma",
     )
 
     def __str__(self):
         return self.correo
+
+    class Meta:
+        ordering = ["created"]
+
+class CaracteristicasPlataforma(models.Model):
+    nombre = models.CharField(max_length=128)
+    descripcion = models.TextField()
+    precio_referencia = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.nombre
 
     class Meta:
         ordering = ["created"]
