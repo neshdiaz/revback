@@ -65,13 +65,13 @@ class Plataforma(models.Model):
     bodega = models.ForeignKey(
         Bodega,
         on_delete=models.PROTECT,
-        related_name="plataformas_en_bodega",
+        related_name="plataformas_en_la_bodega",
         default=1,
     )
     compra = models.ForeignKey(
         Compra,
         on_delete=models.PROTECT,
-        related_name="plataformas_en_compra",
+        related_name="plataformas_en_la_compra",
         null=True,
         blank=True,
     )
