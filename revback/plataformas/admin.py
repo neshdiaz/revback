@@ -1,11 +1,15 @@
 from django.contrib import admin
-from plataformas.models import Plataforma, TipoPlataforma
+from plataformas.models import Plataforma, TipoPlataforma, CaracteristicasPlataforma
 
-class PlataformaAdmin(admin.ModelAdmin):
-    pass
+class CaracteristicasPlataformaInline(admin.TabularInline):
+    model = CaracteristicasPlataforma
+    extra = 0
 
 class TipoPlataformaAdmin(admin.ModelAdmin):
-    pass
+    inlines = [CaracteristicasPlataformaInline]
+
+class PlataformaAdmin(admin.ModelAdmin):
+    inlines = [TipoPlataformaAdmin]
 
 admin.site.register(Plataforma, PlataformaAdmin)
 admin.site.register(TipoPlataforma, TipoPlataformaAdmin)

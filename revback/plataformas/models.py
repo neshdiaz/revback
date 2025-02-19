@@ -93,7 +93,7 @@ class CaracteristicasPlataforma(models.Model):
     precio_referencia = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
     )
-    plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
+    tipo_plataforma = models.ForeignKey(TipoPlataforma, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
