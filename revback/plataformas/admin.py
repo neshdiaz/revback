@@ -1,15 +1,23 @@
 from django.contrib import admin
-from plataformas.models import Plataforma, TipoPlataforma, CaracteristicasPlataforma
+from .models import Plataforma, TipoPlataforma, CaracteristicasPlataforma
 
-class CaracteristicasPlataformaInline(admin.TabularInline):
+# Inline para CaracteristicasPlataforma
+class CaracteristicasPlataformaInline(admin.StackedInline):
     model = CaracteristicasPlataforma
     extra = 0
 
+# Inline para Plataforma
+class PlataformaInline(admin.StackedInline):
+    model = Plataforma
+    extra = 0
+
+# Modelo Admin para TipoPlataforma
 class TipoPlataformaAdmin(admin.ModelAdmin):
-    inlines = [CaracteristicasPlataformaInline]
+    inlines = [CaracteristicasPlataformaInline, PlataformaInline]
+    list_display = ['nombre', 'descripcion']
+    search_fields = ['nombre']
 
-class PlataformaAdmin(admin.ModelAdmin):
-    inlines = [TipoPlataformaAdmin]
-
-admin.site.register(Plataforma, PlataformaAdmin)
+# Registrar los modelos en el admin
 admin.site.register(TipoPlataforma, TipoPlataformaAdmin)
+admin.site.register(Plataforma)
+#admin.site.register(CaracteristicasPlataforma)

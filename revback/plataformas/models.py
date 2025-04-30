@@ -9,9 +9,6 @@ class TipoPlataforma(models.Model):
     nombre = models.CharField(max_length=128)
     descripcion = models.TextField()
     url_imagen = models.CharField(max_length=128, null=True, blank=True)
-    precio_referencia = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
-    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -31,33 +28,15 @@ class Plataforma(models.Model):
         ("RENO", "Renovada"),
     }
 
-    ESTADO_PAGO = {
-        ("PAG ", "Pagada"),
-        ("P_PAG", "Pendiente Pago"),
-    }
-
     correo = models.CharField(max_length=128, unique=True)
     contrasena = models.CharField(max_length=128)
     estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA, default="ADQ")
-    estado_pago_proveedor = models.CharField(
-        max_length=5, choices=ESTADO_PAGO, default="P_PAG"
-    )
-    fecha_pagada_proveedor = models.DateField(null=True, blank=True)
-    estado_pago_vendedor = models.CharField(
-        max_length=5, choices=ESTADO_PAGO, default="P_PAG"
-    )
-    fecha_pagada_vendedor = models.DateField(null=True, blank=True)
     fecha_compra = models.DateField(default=timezone.now)
     fecha_vencimiento = models.DateField(default=timezone.now() + timedelta(days=30))
     vigencia = models.SmallIntegerField(default=30)
     precio_compra = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    precio_venta = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
-    )
-    precio_venta_2 = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
-    )
     notas = models.TextField(null=True, blank=True)
+    
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -67,13 +46,6 @@ class Plataforma(models.Model):
         on_delete=models.CASCADE,
         related_name="plataformas_en_la_bodega",
         default=1,
-    )
-    compra = models.ForeignKey(
-        Compra,
-        on_delete=models.CASCADE,
-        related_name="plataformas_en_la_compra",
-        null=True,
-        blank=True,
     )
     tipo = models.ForeignKey(
         TipoPlataforma,
@@ -88,12 +60,19 @@ class Plataforma(models.Model):
         ordering = ["created"]
 
 class CaracteristicasPlataforma(models.Model):
+    ESTADO_VENTA = {
+        ("TOTAL", "Total"),
+        ("PARCIAL", "Parcial"),
+    }
+
     nombre = models.CharField(max_length=128)
     descripcion = models.TextField()
-    precio_referencia = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
+    estado_venta = models.CharField(
+        max_length=7, choices=ESTADO_VENTA, default="PARCIAL"
     )
+    vendida = models.BooleanField(default=False)
     tipo_plataforma = models.ForeignKey(TipoPlataforma, on_delete=models.CASCADE)
+    
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -102,3 +81,17 @@ class CaracteristicasPlataforma(models.Model):
 
     class Meta:
         ordering = ["created"]
+
+class CaracteristicasPlataformaValor(models.Model):
+    plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
+    caracteristica = models.ForeignKey(CaracteristicasPlataforma, on_delete=models.CASCADE)
+    valor= models.CharField(max_length=128)
+    precio = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.nombre

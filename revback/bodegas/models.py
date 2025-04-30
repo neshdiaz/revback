@@ -4,7 +4,8 @@ from usuarios.models import Usuario
 
 class Bodega(models.Model):
     nombre = models.CharField(max_length=128)
-    descripcion = models.TextField
+    ubicacion = models.CharField(max_length=128)
+    descripcion = models.TextField(blank=True, null=True)
     principal = models.BooleanField
     activa = models.BooleanField
     created = models.DateTimeField(auto_now_add=True)
