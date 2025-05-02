@@ -28,15 +28,28 @@ class Plataforma(models.Model):
         ("RENO", "Renovada"),
     }
 
+    ESTADO_VENTA_CARACTERISTICAS = {
+        ("TOTAL", "Total"),
+        ("PARCIAL", "Parcial"),
+    }
+
     correo = models.CharField(max_length=128, unique=True)
     contrasena = models.CharField(max_length=128)
-    estado = models.CharField(max_length=5, choices=ESTADO_PLATAFORMA, default="ADQ")
+    estado = models.CharField(
+        max_length=5, 
+        choices=ESTADO_PLATAFORMA, 
+        default="ADQ"
+    )
     fecha_compra = models.DateField(default=timezone.now)
-    fecha_vencimiento = models.DateField(default=timezone.now() + timedelta(days=30))
+    fecha_vencimiento = models.DateField(
+        default=timezone.now() + timedelta(days=30)
+    )
     vigencia = models.SmallIntegerField(default=30)
-    precio_compra = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    precio_compra = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
     notas = models.TextField(null=True, blank=True)
-    
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -52,6 +65,9 @@ class Plataforma(models.Model):
         on_delete=models.CASCADE,
         related_name="plataformas_x_tipo_plataforma",
     )
+    estado_venta_caracteristicas = models.CharField(
+        max_length=7, choices=ESTADO_VENTA_CARACTERISTICAS, default="PARCIAL"
+    )
 
     def __str__(self):
         return self.correo
@@ -59,20 +75,16 @@ class Plataforma(models.Model):
     class Meta:
         ordering = ["created"]
 
-class CaracteristicasPlataforma(models.Model):
-    ESTADO_VENTA = {
-        ("TOTAL", "Total"),
-        ("PARCIAL", "Parcial"),
-    }
 
+class CaracteristicasPlataforma(models.Model):
+    tipo_plataforma = models.ForeignKey(
+        TipoPlataforma, 
+        on_delete=models.CASCADE
+    )
     nombre = models.CharField(max_length=128)
     descripcion = models.TextField()
-    estado_venta = models.CharField(
-        max_length=7, choices=ESTADO_VENTA, default="PARCIAL"
-    )
     vendida = models.BooleanField(default=False)
-    tipo_plataforma = models.ForeignKey(TipoPlataforma, on_delete=models.CASCADE)
-    
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -82,14 +94,20 @@ class CaracteristicasPlataforma(models.Model):
     class Meta:
         ordering = ["created"]
 
+
 class CaracteristicasPlataformaValor(models.Model):
     plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE)
-    caracteristica = models.ForeignKey(CaracteristicasPlataforma, on_delete=models.CASCADE)
-    valor= models.CharField(max_length=128)
-    precio = models.DecimalField(
-        max_digits=10, decimal_places=2, null=True, blank=True
+    caracteristica = models.ForeignKey(
+        CaracteristicasPlataforma, on_delete=models.CASCADE
     )
-    
+    valor = models.CharField(max_length=128)
+    precio = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        null=True, 
+        blank=True
+    )
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

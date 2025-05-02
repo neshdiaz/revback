@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "plataformas",
     "proveedores",
     "traslados",
-    "equipos",
     "ventas",
     "clientes",
     "rest_framework",
@@ -172,3 +171,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Default allow all origins, change in production
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Default User Model
+AUTH_USER_MODEL = "usuarios.Usuario"    # Custom user model

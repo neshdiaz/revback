@@ -6,13 +6,16 @@ class Bodega(models.Model):
     nombre = models.CharField(max_length=128)
     ubicacion = models.CharField(max_length=128)
     descripcion = models.TextField(blank=True, null=True)
-    principal = models.BooleanField
-    activa = models.BooleanField
+    principal = models.BooleanField(default=False)
+    activa = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     # Foreign keys
-    responsables = models.ManyToManyField(Usuario)
+    responsables = models.ManyToManyField(
+        Usuario, 
+        related_name='responsable_de_bodegas'
+    )
 
     def __str__(self):
         return self.nombre
